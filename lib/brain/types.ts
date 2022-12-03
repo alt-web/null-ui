@@ -16,3 +16,14 @@ export interface ThreadAPI {
     id: number
     body: string
 }
+
+// threads/id
+export interface DetailedThreadAPI extends ThreadAPI {
+    replies: ReplyAPI[]
+}
+
+// threads/id
+export interface ReplyAPI {
+    id: number
+    body: string
+}
