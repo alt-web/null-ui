@@ -2,7 +2,7 @@ import { NextPage, GetServerSideProps } from "next"
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { DetailedBoardAPI } from "lib/brain"
-import { ThreadBtn } from "lib/ui"
+import { ThreadBtn, NewThreadForm } from "lib/ui"
 
 interface PageProps {
     board?: DetailedBoardAPI
@@ -37,6 +37,7 @@ const BoardView: NextPage<PageProps> = ({board}) => {
             <h2>/{board.code}/ - {board.name}</h2>
             <div>Threads:</div>
             {board.threads.map(thread => <ThreadBtn key={thread.id} data={thread} />) }
+            <NewThreadForm boardId={board.id} />
         </Layout>
     )
 }
