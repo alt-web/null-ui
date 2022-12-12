@@ -15,6 +15,7 @@ export interface DetailedBoardAPI extends BoardAPI {
 export interface ThreadAPI {
     id: number
     body: string
+    attachments: AttachmentAPI[]
 }
 
 // threads/id
@@ -26,4 +27,17 @@ export interface DetailedThreadAPI extends ThreadAPI {
 export interface ReplyAPI {
     id: number
     body: string
+    attachments: AttachmentAPI[]
+}
+
+// attachments
+export interface AttachmentAPI {
+    id: number
+    cid: string
+    name: string
+    mimetype: string
+    size: number
+    width: number | null
+    height: number | null
+    length: number | null
 }

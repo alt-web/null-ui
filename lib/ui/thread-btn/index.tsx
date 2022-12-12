@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ThreadAPI } from "lib/brain"
+import { Attachment } from "lib/ui"
 import styles from "./index.module.css"
 
 export function ThreadBtn({data}: {data: ThreadAPI}) {
@@ -8,6 +9,7 @@ export function ThreadBtn({data}: {data: ThreadAPI}) {
             <div className={styles.btn}>
                 <div>#{data.id}</div>
                 <div>{data.body}</div>
+                {data.attachments.map(attachment => <Attachment key={attachment.id} data={attachment} />)}
             </div>
         </Link>
     )
