@@ -4,7 +4,7 @@ import styles from "./index.module.css"
 
 export const BoardBtn = ({data}: {data: BoardAPI}) => {
     return (
-        <Link href={`/boards/${data.id}`}>
+        <Link href={`/boards/${data.code}`}>
             <div className={styles.btn}>
                 <h4 className={styles.title}>/{data.code}/ - {data.name}</h4>
                 <div>{data.description}</div>
