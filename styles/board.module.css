@@ -1,0 +1,10 @@
+.page {
+    padding: 1em;
+}
+
+.threads {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { DetailedBoardAPI, AttachmentAPI } from "lib/brain"
 import { ThreadBtn, NewThreadForm } from "lib/ui"
 import MediaContext from "lib/media-context"
+import styles from "styles/board.module.css"
 
 interface PageProps {
     board: DetailedBoardAPI
@@ -43,14 +44,17 @@ const BoardView: NextPage<PageProps> = ({board}) => {
         <Layout>
             <h2>/{board.code}/ - {board.name}</h2>
             <div>Threads:</div>
-            {board.threads.map(thread => <ThreadBtn key={thread.id} data={thread} />) }
+            <div className={styles.threads}>
+                {board.threads.map(thread =>
+                    <ThreadBtn key={thread.id} data={thread} />) }
+            </div>
             <NewThreadForm boardId={board.id} />
         </Layout>
     )
 }
 
 const Layout = ({children}: {children: ReactNode}) => (
-    <div>
+    <div className={styles.page}>
         <Link href="/">Main page</Link>
         {children}
     </div>
