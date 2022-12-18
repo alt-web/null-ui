@@ -9,7 +9,10 @@ export function ThreadBtn({data}: {data: ThreadAPI}) {
             <div className={styles.btn}>
                 <div>#{data.id}</div>
                 <div>{data.body}</div>
-                {data.attachments.map(attachment => <Attachment key={attachment.id} data={attachment} />)}
+                <div className={styles.attachments}>
+                    {data.attachments.map(attachment =>
+                        <Attachment key={attachment.id} data={attachment} />)}
+                </div>
             </div>
         </Link>
     )

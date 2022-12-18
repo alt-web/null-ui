@@ -1,9 +1,23 @@
-.image {
-    position: relative;
+.image,
+.placeholder {
     width: 100px;
     height: 100px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.image {
+    position: relative;
+    overflow: hidden;
 }
 
 .image img {
     object-fit: cover;
+}
+
+.placeholder {
+    background-color: rgb(64 64 64);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
