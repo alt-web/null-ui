@@ -1,0 +1,37 @@
+.background {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000c;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
+
+.btn {
+    width: 32px;
+    height: 32px;
+}
+
+.container {
+    max-width: 600px;
+    max-height: 600px;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container img {
+    object-fit: contain;
+}
+
+.video {
+    width: 100%;
+}

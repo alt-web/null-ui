@@ -1,39 +1,46 @@
 import Image from "next/image"
-import { createRef } from "react"
+import { useContext } from "react"
 import { AttachmentAPI } from "lib/brain"
 import styles from "./index.module.css"
+import MediaContext from "lib/media-context"
 
 export function Attachment({data}: {data: AttachmentAPI}) {
-    if (data.mimetype.startsWith("image")) return <ImageAttachment cid={data.cid} />
-    if (data.mimetype.startsWith("audio")) return <AudioAttachment cid={data.cid} />
+    if (data.mimetype.startsWith("image")) return <ImageAttachment data={data} />
+    if (data.mimetype.startsWith("audio")) return <AudioAttachment data={data} />
+    if (data.mimetype.startsWith("video")) return <VideoAttachment data={data} />
     return <></>
 }
 
-function ImageAttachment({cid}: {cid: string}) {
+function ImageAttachment({data}: {data: AttachmentAPI}) {
+    const { setAid } = useContext(MediaContext)
+
     return (
-        <div className={styles.image}>
-            <Image src={getIpfsUrl(cid)} alt="Attachment" fill />
+        <div className={styles.image} onClick={() => setAid(data.id)}>
+            <Image src={getIpfsUrl(data.cid)} alt={data.name} fill />
         </div>
     )
 }
 
-function AudioAttachment({cid}: {cid: string}) {
-    const player = createRef<HTMLAudioElement>()
-
-    const toggle = () => {
-        if (player.current) {
-            if (player.current.paused) player.current.play()
-            else player.current.pause()
-        }
-    }
+function AudioAttachment({data}: {data: AttachmentAPI}) {
+    const { setAid } = useContext(MediaContext)
 
     return (
         <div>
-            <div className={styles.placeholder} onClick={toggle}>Audio</div>
-            <audio src={getIpfsUrl(cid)} ref={player} />
+            <div className={styles.placeholder} onClick={() => setAid(data.id)}>Audio</div>
         </div>
     )
 }
+
+function VideoAttachment({data}: {data: AttachmentAPI}) {
+    const { setAid } = useContext(MediaContext)
+
+    return (
+        <div>
+            <div className={styles.placeholder} onClick={() => setAid(data.id)}>Video</div>
+        </div>
+    )
+}
+
 
 function getIpfsUrl(cid: string) {
     return `http://${cid}.ipfs.localhost:8080`
