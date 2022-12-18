@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import { FileUploader } from "lib/ui"
 import styles from "./index.module.css"
 
 export function NewThreadForm({boardId}: {boardId: number}) {
@@ -6,6 +7,7 @@ export function NewThreadForm({boardId}: {boardId: number}) {
         <form className={styles.form} onSubmit={(e) => sendThread(e)}>
             <input type="hidden" name="board" value={boardId} />
             <textarea placeholder="Body" name="body" required />
+            <FileUploader />
             <button type="submit">Отправить</button>
         </form>
     )
@@ -14,6 +16,10 @@ export function NewThreadForm({boardId}: {boardId: number}) {
 interface ThreadForm extends HTMLFormElement {
     board: HTMLInputElement
     body: HTMLInputElement
+    aid1?: HTMLInputElement
+    aid2?: HTMLInputElement
+    aid3?: HTMLInputElement
+    aid4?: HTMLInputElement
 }
 
 async function sendThread(e: FormEvent) {
@@ -23,6 +29,16 @@ async function sendThread(e: FormEvent) {
     const fd = new FormData()
     fd.append("board", target.board.value)
     fd.append("body", target.body.value)
+
+    const appendAttachment = (name: string) => {
+        if (target[name])
+            fd.append(name, target[name].value)
+    }
+
+    appendAttachment("aid1")
+    appendAttachment("aid2")
+    appendAttachment("aid3")
+    appendAttachment("aid4")
 
     const options = {
         method: "POST",
