@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { DetailedThreadAPI } from 'lib/brain'
 import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
+import styles from "styles/thread.module.css"
 
 interface PageProps {
     thread: DetailedThreadAPI
@@ -43,15 +44,18 @@ const ThreadView:NextPage<PageProps> = ({thread}) => {
         <Layout>
             <h2>Thread #{thread.id}</h2>
             <ThreadBtn data={thread} />
-            <div>Replies:</div>
-            {thread.replies.map(reply => <ReplyCard key={reply.id} data={reply} />)}
+            <h4>Replies:</h4>
+            <div className={styles.replies}>
+                {thread.replies.map(reply =>
+                    <ReplyCard key={reply.id} data={reply} />)}
+            </div>
             <NewReplyForm threadId={thread.id} />
         </Layout>
     )
 }
 
 const Layout = ({children}: {children: ReactNode}) => (
-    <div>
+    <div className={styles.page}>
         <Link href="/">Main page</Link>
         {children}
     </div>
