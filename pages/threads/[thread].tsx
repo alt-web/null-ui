@@ -2,7 +2,7 @@ import { NextPage, GetServerSideProps } from 'next'
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { DetailedThreadAPI } from 'lib/brain'
-import { ThreadBtn, ReplyCard } from "lib/ui"
+import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
 
 interface PageProps {
     thread?: DetailedThreadAPI
@@ -35,6 +35,7 @@ const ThreadView:NextPage<PageProps> = ({thread}) => {
             <ThreadBtn data={thread} />
             <div>Replies:</div>
             {thread.replies.map(reply => <ReplyCard key={reply.id} data={reply} />)}
+            <NewReplyForm threadId={thread.id} />
         </Layout>
     )
 }
