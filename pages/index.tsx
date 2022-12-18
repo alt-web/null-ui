@@ -29,7 +29,10 @@ const Home: NextPage<PageProps> = (props) => {
     return (
         <div className={styles.container}>
             <h2>Доски</h2>
-            {props.boards.map(boardObj => <BoardBtn key={boardObj.id} data={boardObj} /> )}
+            <div className={styles.boards}>
+                {props.boards.map(boardObj =>
+                    <BoardBtn key={boardObj.id} data={boardObj} /> )}
+            </div>
         </div>
     )
 }

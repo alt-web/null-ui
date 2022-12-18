@@ -1,12 +1,30 @@
 .btn {
-    background-color: #222;
+    display: flex;
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.code {
     padding: 10px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
+    background-color: rgb(38 38 38);
+    font-weight: 700;
+    border-radius: 8px 0 0 8px;
 }
 
 .title {
     margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 10px;
+    font-weight: 400;
+    background-color: rgb(23 23 23);
+    width: 200px;
+    border-radius: 0 8px 8px 0;
+}
+
+.btn:hover .code {
+    background-color: rgb(64 64 64);
+}
+
+.btn:hover .title {
+    background-color: rgb(38 38 38);
 }
