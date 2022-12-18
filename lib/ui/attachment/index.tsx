@@ -8,8 +8,13 @@ export function Attachment({data}: {data: AttachmentAPI}) {
             <div>Attachment: {data.cid.slice(0,4)}...{data.cid.slice(-4)}</div>
             <div>Filename: {data.name}</div>
             { data.mimetype.startsWith("image") && <div className={styles.image}>
-                <Image src={`http://${data.cid}.ipfs.localhost:8080`} alt="Attachment" fill />
+                <Image src={getIpfsUrl(data.cid)} alt="Attachment" fill />
             </div> }
+            { data.mimetype.startsWith("audio") && <audio src={getIpfsUrl(data.cid)} controls /> }
         </div>
     )
+}
+
+function getIpfsUrl(cid: string) {
+    return `http://${cid}.ipfs.localhost:8080`
 }
