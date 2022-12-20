@@ -1,6 +1,7 @@
 import { AttachmentAPI } from "lib/brain"
 import MediaContext from "lib/media-context"
 import { useContext, useState, useEffect, MouseEvent } from "react"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import styles from "./index.module.css"
 import Image from "next/image"
 
@@ -41,11 +42,15 @@ export function MediaViewer() {
 
     if (attachment !== null) return (
         <div className={styles.background} onClick={close}>
-            <button className={styles.btn} onClick={prev}>L</button>
+            <button className={styles.btn} onClick={prev}>
+                <FiChevronLeft />
+            </button>
                 <div className={styles.container}>
                     <ContentParser attachment={attachment} />
                 </div>
-            <button className={styles.btn} onClick={next}>R</button>
+            <button className={styles.btn} onClick={next}>
+                <FiChevronRight />
+            </button>
         </div>
     )
     return <></>
