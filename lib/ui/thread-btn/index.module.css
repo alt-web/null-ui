@@ -6,6 +6,11 @@
     padding: 10px;
 }
 
+.heading {
+    display: flex;
+    gap: 10px;
+}
+
 .attachments {
     display: flex;
     gap: 10px;

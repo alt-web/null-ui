@@ -6,9 +6,14 @@ import styles from "./index.module.css"
 export function ThreadBtn({data}: {data: ThreadAPI}) {
     return (
             <div className={styles.btn}>
-                <Link href={`/threads/${data.id}`}>
-                    <div>#{data.id}</div>
-                </Link>
+                <div className={styles.heading}>
+                    <Link href={`/threads/${data.id}`}>
+                        <div>#{data.id}</div>
+                    </Link>
+                    <div>
+                        {new Date(data.created_at).toLocaleString("en")}
+                    </div>
+                </div>
                 <div>{data.body}</div>
                 <div className={styles.attachments}>
                     {data.attachments.map(attachment =>

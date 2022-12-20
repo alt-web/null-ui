@@ -5,3 +5,8 @@
     width: 100%;
     max-width: 500px;
 }
+
+.heading {
+    display: flex;
+    gap: 10px;
+}
