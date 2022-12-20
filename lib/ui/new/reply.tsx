@@ -2,9 +2,9 @@ import { FormEvent } from "react"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
 
-export function NewReplyForm({threadId}: {threadId: number}) {
+export function NewReplyForm({threadId, onSuccess}: {threadId: number, onSuccess: () => void}) {
     return (
-        <form className={styles.form} onSubmit={(e) => sendReply(e)}>
+        <form className={styles.form} onSubmit={(e) => sendReply(e, onSuccess)}>
             <h4>New reply</h4>
             <input type="hidden" name="origin" value={threadId} />
             <textarea placeholder="Body" name="body" required />
@@ -23,7 +23,7 @@ interface ReplyForm extends HTMLFormElement {
     aid4?: HTMLInputElement
 }
 
-async function sendReply(e: FormEvent) {
+async function sendReply(e: FormEvent, onSuccess: () => void) {
     e.preventDefault()
     const target = e.target as ReplyForm
 
@@ -49,7 +49,7 @@ async function sendReply(e: FormEvent) {
     const url = "http://localhost:8000/replies/"
     const response = await fetch(url, options)
     if (response.status >= 200 && response.status < 300)
-        alert('Reply was created')
+        onSuccess()
     else
         alert('Something went wrong')
 }

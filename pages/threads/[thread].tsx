@@ -1,55 +1,50 @@
-import { NextPage, GetServerSideProps } from 'next'
+import { NextPage } from 'next'
 import { ReactNode, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import { DetailedThreadAPI } from 'lib/brain'
+import { useRouter } from "next/router"
+import useSWR, { useSWRConfig } from "swr"
+import { DetailedThreadAPI } from "lib/brain"
 import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
-interface PageProps {
-    thread: DetailedThreadAPI
-}
 
-export const getServerSideProps: GetServerSideProps = async(context) => {
-    if (!context.query.thread)
-        return { notFound: true }
-    
-    const thread = context.query.thread.toString()
-    const response = await fetch(`http://127.0.0.1:8000/threads/${thread}/`)
-    if (response.status === 404)
-        return { notFound: true }
-    const res = await response.json()
+const ThreadView:NextPage = () => {
+    const router = useRouter()
+    const thread = router.query.thread ? router.query.thread.toString() : null
+    const url = thread ? `http://127.0.0.1:8000/threads/${thread}` : null
+    const { data, error } = useSWR<DetailedThreadAPI, Error>(url)
+    const { mutate } = useSWRConfig()
+    const update = () => mutate(url)
 
-    const props: PageProps = {
-        thread: res
-    }
-    return { props }
-}
-
-const ThreadView:NextPage<PageProps> = ({thread}) => {
     const { setAttachments } = useContext(MediaContext)
 
     useEffect(() => {
-        const allAttachments = [...thread.attachments]
-        for (const reply of thread.replies) {
-            for (const attachment of reply.attachments) {
-                allAttachments.push(attachment)
+        if (data) {
+            const allAttachments = [...data.attachments]
+            for (const reply of data.replies) {
+                for (const attachment of reply.attachments) {
+                    allAttachments.push(attachment)
+                }
             }
-        }
         
-        setAttachments(allAttachments)
-    }, [thread.attachments, thread.replies])
+            setAttachments(allAttachments)
+        }
+    }, [data])
+
+    if (error) return <Layout>Error</Layout>
+    if (!data) return <Layout>Loading</Layout>
 
     return (
         <Layout>
-            <h2>Thread #{thread.id}</h2>
-            <ThreadBtn data={thread} />
+            <h2>Thread #{data.id}</h2>
+            <ThreadBtn data={data} />
             <h4>Replies:</h4>
             <div className={styles.replies}>
-                {thread.replies.map(reply =>
+                {data.replies.map(reply =>
                     <ReplyCard key={reply.id} data={reply} />)}
             </div>
-            <NewReplyForm threadId={thread.id} />
+            <NewReplyForm threadId={data.id} onSuccess={update} />
         </Layout>
     )
 }
