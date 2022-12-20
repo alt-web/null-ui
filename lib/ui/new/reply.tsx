@@ -1,11 +1,12 @@
 import { FormEvent } from "react"
 import { FileUploader } from "lib/ui"
-import styles from "./index.module.css"
+import styles from "./common.module.css"
 
-export function NewThreadForm({boardId}: {boardId: number}) {
+export function NewReplyForm({threadId}: {threadId: number}) {
     return (
-        <form className={styles.form} onSubmit={(e) => sendThread(e)}>
-            <input type="hidden" name="board" value={boardId} />
+        <form className={styles.form} onSubmit={(e) => sendReply(e)}>
+            <h4>New reply</h4>
+            <input type="hidden" name="origin" value={threadId} />
             <textarea placeholder="Body" name="body" required />
             <FileUploader />
             <button type="submit">Отправить</button>
@@ -13,8 +14,8 @@ export function NewThreadForm({boardId}: {boardId: number}) {
     )
 }
 
-interface ThreadForm extends HTMLFormElement {
-    board: HTMLInputElement
+interface ReplyForm extends HTMLFormElement {
+    origin: HTMLInputElement
     body: HTMLInputElement
     aid1?: HTMLInputElement
     aid2?: HTMLInputElement
@@ -22,12 +23,12 @@ interface ThreadForm extends HTMLFormElement {
     aid4?: HTMLInputElement
 }
 
-async function sendThread(e: FormEvent) {
+async function sendReply(e: FormEvent) {
     e.preventDefault()
-    const target = e.target as ThreadForm
+    const target = e.target as ReplyForm
 
     const fd = new FormData()
-    fd.append("board", target.board.value)
+    fd.append("origin", target.origin.value)
     fd.append("body", target.body.value)
 
     const appendAttachment = (name: string) => {
@@ -45,10 +46,10 @@ async function sendThread(e: FormEvent) {
         body: fd
     }
 
-    const url = "http://localhost:8000/threads/"
+    const url = "http://localhost:8000/replies/"
     const response = await fetch(url, options)
     if (response.status >= 200 && response.status < 300)
-        alert('Thread was created')
+        alert('Reply was created')
     else
         alert('Something went wrong')
 }
