@@ -1,7 +1,7 @@
 import { NextPage, GetServerSideProps } from "next"
 import { ReactNode, useContext, useEffect } from 'react'
 import Link from 'next/link'
-import { DetailedBoardAPI, AttachmentAPI } from "lib/brain"
+import { DetailedBoardAPI, AttachmentAPI, getBackendUrl } from "lib/brain"
 import { ThreadBtn, NewThreadForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/board.module.css"
@@ -15,7 +15,8 @@ export const getServerSideProps: GetServerSideProps = async(context) => {
         return { notFound: true }
     const board = context.query.board.toString()
     
-    const response = await fetch(`http://127.0.0.1:8000/boards/${board}`)
+    const url = getBackendUrl(`boards/${board}`)
+    const response = await fetch(url)
     if (response.status === 404)
         return { notFound: true }
     const res = await response.json()

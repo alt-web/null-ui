@@ -1,5 +1,5 @@
 import { NextPage } from "next"
-import { BoardAPI } from "lib/brain"
+import { BoardAPI, getBackendUrl } from "lib/brain"
 import { BoardBtn } from "lib/ui"
 import styles from '../styles/Home.module.css'
 
@@ -8,21 +8,14 @@ interface PageProps {
 }
 
 export const getServerSideProps = async() => {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/boards/")
-        const res = await response.json()
+    const url = getBackendUrl('boards')
+    const response = await fetch(url)
+    const res = await response.json()
 
-        const props: PageProps = {
-                boards: res
-        }
-        return { props }
+    const props: PageProps = {
+        boards: res
     }
-    catch {
-        const props: PageProps = {
-            boards: []
-        }
-        return { props }
-    }
+    return { props }
 }
 
 const Home: NextPage<PageProps> = (props) => {

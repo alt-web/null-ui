@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
 
@@ -46,7 +47,7 @@ async function sendThread(e: FormEvent) {
         body: fd
     }
 
-    const url = "http://localhost:8000/threads/"
+    const url = getBackendUrl("threads")
     const response = await fetch(url, options)
     if (response.status >= 200 && response.status < 300)
         alert('Thread was created')

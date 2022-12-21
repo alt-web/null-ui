@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
 
@@ -46,7 +47,7 @@ async function sendReply(e: FormEvent, onSuccess: () => void) {
         body: fd
     }
 
-    const url = "http://localhost:8000/replies/"
+    const url = getBackendUrl("replies")
     const response = await fetch(url, options)
     if (response.status >= 200 && response.status < 300)
         onSuccess()

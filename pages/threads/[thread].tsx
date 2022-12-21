@@ -3,16 +3,16 @@ import { ReactNode, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
-import { DetailedThreadAPI } from "lib/brain"
+import { DetailedThreadAPI, getBackendUrl } from "lib/brain"
 import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
 
-const ThreadView:NextPage = () => {
+const ThreadView: NextPage = () => {
     const router = useRouter()
     const thread = router.query.thread ? router.query.thread.toString() : null
-    const url = thread ? `http://127.0.0.1:8000/threads/${thread}` : null
+    const url = thread ? getBackendUrl(`threads/${thread}`) : null
     const { data, error } = useSWR<DetailedThreadAPI, Error>(url)
     const { mutate } = useSWRConfig()
     const update = () => mutate(url)
