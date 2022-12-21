@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from "react"
+import { getBackendUrl } from "lib/brain"
 
 export function FileUploader() {
     const [aids, setAids] = useState<number[]>([])
@@ -36,7 +37,8 @@ async function uploadFile(e: ChangeEvent<HTMLInputElement>, appendAid: (arg0: nu
         body: fd
     }
 
-    const response = await fetch("http://127.0.0.1:8000/attachments/", options)
+    const url = getBackendUrl('attachments')
+    const response = await fetch(url, options)
     const data = await response.json()
 
     appendAid(data.id)

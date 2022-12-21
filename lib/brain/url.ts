@@ -9,3 +9,11 @@ export function getBackendUrl(path: string, trailingSlash = true) {
     if (!url.endsWith("/") && !url.includes("?") && trailingSlash) url += "/"
     return url
 }
+
+export function getIpfsUrl(cid: string) {
+    const host = process.env.NEXT_PUBLIC_IPFS_URL
+        ? process.env.NEXT_PUBLIC_IPFS_URL
+        : "http://{cid}.ipfs.localhost:8080"
+    const url = host.replace('{cid}', cid)
+    return url
+}

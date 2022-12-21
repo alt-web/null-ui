@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { useContext } from "react"
-import { AttachmentAPI } from "lib/brain"
+import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import styles from "./index.module.css"
 import MediaContext from "lib/media-context"
 
@@ -39,9 +39,4 @@ function VideoAttachment({data}: {data: AttachmentAPI}) {
             <div className={styles.placeholder} onClick={() => setAid(data.id)}>Video</div>
         </div>
     )
-}
-
-
-function getIpfsUrl(cid: string) {
-    return `http://${cid}.ipfs.localhost:8080`
 }
