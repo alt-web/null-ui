@@ -10,7 +10,8 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.ipfs.0ch.space',
+        hostname: 'ipfs.0ch.space',
+        pathname: '**',
       }
     ],
   }
