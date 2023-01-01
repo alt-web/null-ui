@@ -8,5 +8,22 @@
 
 .heading {
     display: flex;
+    gap: 1em;
+}
+
+.reply svg {
+    margin-right: 6px;
+    line-height: 16px;
+    color: #aaa;
+}
+
+.reply p {
+    margin-bottom: 0;
+}
+
+.attachments {
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    margin-top: 1em;
 }
