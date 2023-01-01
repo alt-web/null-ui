@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import Router from "next/router"
 import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
@@ -49,8 +50,11 @@ async function sendThread(e: FormEvent) {
 
     const url = getBackendUrl("threads")
     const response = await fetch(url, options)
-    if (response.status >= 200 && response.status < 300)
-        alert('Thread was created')
-    else
+    if (response.ok) {
+        const content = await response.json()
+        Router.push(`/threads/${content.id}`)
+    }
+    else {
         alert('Something went wrong')
+    }
 }
