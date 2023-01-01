@@ -24,6 +24,7 @@
 .heading {
     display: flex;
     gap: 1em;
+    font-size: 10px;
 }
 
 .message svg {
@@ -71,6 +72,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-family: inherit;
+    font-size: inherit;
 }
 
 .replyBtn:hover {
