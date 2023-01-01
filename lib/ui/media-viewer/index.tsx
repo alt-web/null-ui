@@ -41,7 +41,8 @@ export function MediaViewer() {
     }
 
     if (attachment !== null) return (
-        <div className={styles.background} onClick={close}>
+        <div className={styles.viewer}>
+            <div className={styles.background} onClick={close}></div>
             <div className={styles.mainRow}>
                 <Button isVisible={attachments.length > 1} onClick={prev} icon={<FiChevronLeft />} />
                 <div className={styles.container}>
