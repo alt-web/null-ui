@@ -1,4 +1,4 @@
-import { AttachmentAPI } from "lib/brain"
+import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import MediaContext from "lib/media-context"
 import { useContext, useState, useEffect, MouseEvent } from "react"
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
@@ -67,8 +67,4 @@ function ContentParser({attachment}: {attachment: AttachmentAPI}) {
         <audio className={styles.video} src={getIpfsUrl(attachment.cid)} autoPlay controls />
     )
     return <div>Type is not supported: {attachment.mimetype}</div>
-}
-
-function getIpfsUrl(cid: string) {
-    return `http://${cid}.ipfs.localhost:8080`
 }
