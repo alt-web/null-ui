@@ -1,7 +1,7 @@
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import MediaContext from "lib/media-context"
 import { useContext, useState, useEffect, MouseEvent, ReactNode } from "react"
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { FiChevronLeft, FiChevronRight, FiFile, FiHardDrive, FiDownload } from "react-icons/fi"
 import styles from "./index.module.css"
 import Image from "next/image"
 
@@ -42,11 +42,22 @@ export function MediaViewer() {
 
     if (attachment !== null) return (
         <div className={styles.background} onClick={close}>
-            <Button isVisible={attachments.length > 1} onClick={prev} icon={<FiChevronLeft />} />
-            <div className={styles.container}>
-                <ContentParser attachment={attachment} />
+            <div className={styles.mainRow}>
+                <Button isVisible={attachments.length > 1} onClick={prev} icon={<FiChevronLeft />} />
+                <div className={styles.container}>
+                    <ContentParser attachment={attachment} />
+                </div>
+                <Button isVisible={attachments.length > 1} onClick={next} icon={<FiChevronRight />} />
             </div>
-            <Button isVisible={attachments.length > 1} onClick={next} icon={<FiChevronRight />} />
+            <div className={styles.secondaryRow}>
+                <div><FiFile /> {attachment.name}</div>
+                <div><FiHardDrive /> {formatBytes(attachment.size)}</div>
+                <div>
+                    <a href={getIpfsUrl(attachment.cid)} target="_blank" rel="noreferrer">
+                        <FiDownload /> Download
+                    </a>
+                </div>
+            </div>
         </div>
     )
     return <></>
@@ -79,4 +90,14 @@ function ContentParser({attachment}: {attachment: AttachmentAPI}) {
         <audio className={styles.audio} src={getIpfsUrl(attachment.cid)} autoPlay controls />
     )
     return <div>Type is not supported: {attachment.mimetype}</div>
+}
+
+function formatBytes(bytes: number) {
+    if (bytes < 1024) return `${bytes} b`
+
+    const kbytes = bytes / 1024
+    if (kbytes < 1024) return `${kbytes.toFixed(2)} kb`
+
+    const mbytes = kbytes / 1024
+    return `${mbytes.toFixed(2)} mb`
 }
