@@ -63,3 +63,37 @@
     border-top: 1px solid #444;
     padding: 10px;
 }
+
+.replyBtn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.replyBtn:hover {
+    background-color: rgb(64 64 64);
+}
+
+.replyBtn svg {
+    color: inherit;
+}
+
+.space {
+    flex-grow: 1;
+}
+
+.target {
+    background-color: rgb(64 64 64);
+    width: fit-content;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+}

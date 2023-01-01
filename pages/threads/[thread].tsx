@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { ReactNode, useEffect, useContext } from 'react'
+import { ReactNode, useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
@@ -16,6 +16,8 @@ const ThreadView: NextPage = () => {
     const { data, error } = useSWR<DetailedThreadAPI, Error>(url)
     const { mutate } = useSWRConfig()
     const update = () => mutate(url)
+
+    const [target, setTarget] = useState<number|undefined>(undefined)
 
     const { setAttachments } = useContext(MediaContext)
 
@@ -39,10 +41,15 @@ const ThreadView: NextPage = () => {
         <Layout>
             <h2>Thread #{data.id}</h2>
             <div className={styles.replies}>
-                {data.replies.map(reply =>
-                    <Message key={reply.id} data={reply} />)}
+                {data.replies.map((reply, index) =>
+                    <Message
+                        key={reply.id}
+                        data={reply}
+                        onReply={index > 0 ? () => setTarget(reply.id) : undefined}
+                    />
+                )}
             </div>
-            <NewReplyForm threadId={data.id} onSuccess={update} />
+            <NewReplyForm threadId={data.id} onSuccess={update} target={target} clearTarget={() => setTarget(undefined)} />
         </Layout>
     )
 }

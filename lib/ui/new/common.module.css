@@ -24,3 +24,30 @@
     cursor: pointer;
     border-radius: 8px;
 }
+
+.target {
+    display: flex;
+    gap: 10px;
+    background-color: rgb(38 38 38);
+    width: fit-content;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.target div,
+.target button {
+    padding: 4px;
+}
+
+.target button {
+    width: 28px;
+    margin-top: 0;
+    font-size: inherit;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.target button:hover {
+    background-color: rgb(64 64 64);
+}

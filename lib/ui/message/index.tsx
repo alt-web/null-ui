@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import { FiHash, FiCalendar } from "react-icons/fi"
+import { FiHash, FiCalendar, FiCornerDownRight, FiChevronsRight } from "react-icons/fi"
 import Link from "next/link"
 import { ReplyAPI, AttachmentAPI } from "lib/brain"
 import { Attachment } from "../attachment"
 import styles from "./index.module.css"
 
-export function Message({data, href, replies}: {data: ReplyAPI, href?: string, replies?: ReplyAPI[]}) {
+export function Message({data, href, replies, onReply}: {data: ReplyAPI, href?: string, replies?: ReplyAPI[], onReply?: () => void}) {
     return (
         <div className={styles.container}>
             <div className={styles.message}>
@@ -15,7 +15,10 @@ export function Message({data, href, replies}: {data: ReplyAPI, href?: string, r
                 <div className={styles.heading}>
                     <div><FiHash />{data.id}</div>
                     <DateTime createdAt={data.created_at} />
+                    <div className={styles.space}></div>
+                    <ReplyButton onReply={onReply} />
                 </div>
+                <TargetReply target={data.target} />
                 <p>{data.body}</p>
                 <Attachments data={data.attachments} />
             </div>
@@ -62,5 +65,24 @@ function Reply({data}: {data: ReplyAPI}) {
                 <Attachment key={attachment.id} data={attachment} small={true} />)}
             {data.body}
         </div>
+    )
+}
+
+function ReplyButton({onReply}: {onReply?: () => void}) {
+    if (onReply === undefined) return <></>
+
+    return (
+        <button className={styles.replyBtn} onClick={onReply}>
+            <FiCornerDownRight /> Reply
+        </button>
+    )
+}
+
+function TargetReply({target}: {target: number|null}) {
+    if (!target) return <></>
+    return (
+        <p className={styles.target}>
+            <FiChevronsRight /> In response to #{target}
+        </p>
     )
 }
