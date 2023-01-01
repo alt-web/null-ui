@@ -1,16 +1,24 @@
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
 
 export function NewReplyForm({threadId, onSuccess, target, clearTarget}: {threadId: number, onSuccess: () => void, target?: number, clearTarget: () => void}) {
+    // Used to reset the list of files after submit
+    const [fileUploaderKey, setFileUploaderKey] = useState(1)
+    
+    const afterSubmit = () => {
+        clearTarget()
+        setFileUploaderKey(fk => fk + 1)
+        onSuccess()
+    }
     return (
-        <form className={styles.form} onSubmit={(e) => sendReply(e, onSuccess)}>
+        <form className={styles.form} onSubmit={(e) => sendReply(e, afterSubmit)}>
             <h4>New reply</h4>
             <TargetControls target={target} clearTarget={clearTarget} />
             <input type="hidden" name="origin" value={threadId} />
             <textarea placeholder="Body" name="body" required />
-            <FileUploader />
+            <FileUploader key={fileUploaderKey} />
             <button type="submit">Отправить</button>
         </form>
     )
@@ -66,8 +74,11 @@ async function sendReply(e: FormEvent, onSuccess: () => void) {
 
     const url = getBackendUrl("replies")
     const response = await fetch(url, options)
-    if (response.ok)
+    if (response.ok) {
+        target.reset()
         onSuccess()
-    else
+    }
+    else {
         alert('Something went wrong')
+    }
 }
