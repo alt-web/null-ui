@@ -5,20 +5,24 @@ import { ReplyAPI, AttachmentAPI } from "lib/brain"
 import { Attachment } from "../attachment"
 import styles from "./index.module.css"
 
-export function Message({data, href}: {data: ReplyAPI, href?: string}) {
+export function Message({data, href, replies}: {data: ReplyAPI, href?: string, replies?: ReplyAPI[]}) {
     return (
-        <div className={styles.message}>
-            { href && <Link href={href}>
-                <div className={styles.link}></div>
-            </Link> }
-            <div className={styles.heading}>
-                <div>
-                    <FiHash />{data.id}
+        <div className={styles.container}>
+            <div className={styles.message}>
+                { href && <Link href={href}>
+                    <div className={styles.link}></div>
+                </Link> }
+                <div className={styles.heading}>
+                    <div><FiHash />{data.id}</div>
+                    <DateTime createdAt={data.created_at} />
                 </div>
-                <DateTime createdAt={data.created_at} />
+                <p>{data.body}</p>
+                <Attachments data={data.attachments} />
             </div>
-            <p>{data.body}</p>
-            <Attachments data={data.attachments} />
+            
+            <div className={styles.replies}>
+                {replies && replies.map(reply => <Reply data={reply} key={reply.id} />)}
+            </div>
         </div>
     )
 }
@@ -47,6 +51,16 @@ function Attachments({data}: {data: AttachmentAPI[]}) {
         <div className={styles.attachments}>
             {data.map(attachment =>
                 <Attachment key={attachment.id} data={attachment} />)}
+        </div>
+    )
+}
+
+function Reply({data}: {data: ReplyAPI}) {
+    return (
+        <div>
+            {data.attachments.map(attachment =>
+                <Attachment key={attachment.id} data={attachment} small={true} />)}
+            {data.body}
         </div>
     )
 }

@@ -1,10 +1,16 @@
-.message {
-    background-color: #333;
+.container {
     border-radius: 8px;
-    padding: 10px;
     width: 100%;
     max-width: 500px;
+    overflow: hidden;
+}
+
+.message {
+    background-color: #333;
+    padding: 10px;
+    width: 100%;
     position: relative;
+    box-shadow: 0 0 15px #0008;
 }
 
 .link {
@@ -35,4 +41,25 @@
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 1em;
+}
+
+.replies > div {
+    background-color: #222;
+    width: 100%;
+    z-index: -1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.replies > div:first-of-type {
+    padding-top: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.replies > div:not(:first-of-type) {
+    border-top: 1px solid #444;
+    padding: 10px;
 }

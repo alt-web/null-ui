@@ -36,6 +36,11 @@ const BoardView: NextPage<PageProps> = ({board}) => {
             for (const attachment of thread.first_reply.attachments) {
                 allAttachments.push(attachment)
             }
+            for (const reply of thread.last_replies) {
+                for (const attachment of reply.attachments) {
+                    allAttachments.push(attachment)
+                }
+            }
         }
         
         setAttachments(allAttachments)
@@ -47,7 +52,11 @@ const BoardView: NextPage<PageProps> = ({board}) => {
             <div>Threads:</div>
             <div className={styles.threads}>
                 {board.threads.map(thread =>
-                    <Message key={thread.id} data={thread.first_reply} href={`/threads/${thread.id}`}/>
+                    <Message
+                        key={thread.id}
+                        data={thread.first_reply}
+                        href={`/threads/${thread.id}`}
+                        replies={thread.last_replies} />
                 ) }
             </div>
             <NewThreadForm boardId={board.id} />

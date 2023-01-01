@@ -75,7 +75,7 @@ function ContentParser({attachment}: {attachment: AttachmentAPI}) {
     if (attachment.mimetype.startsWith("video")) return (
         <video className={styles.video} src={getIpfsUrl(attachment.cid)} autoPlay controls />
     )
-    if (attachment.mimetype.startsWith("audio")) return (
+    if (attachment.mimetype.startsWith("audio") || attachment.mimetype === "application/octet-stream") return (
         <audio className={styles.video} src={getIpfsUrl(attachment.cid)} autoPlay controls />
     )
     return <div>Type is not supported: {attachment.mimetype}</div>

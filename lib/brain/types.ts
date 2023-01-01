@@ -15,6 +15,7 @@ export interface DetailedBoardAPI extends BoardAPI {
 export interface ThreadAPI {
     id: number
     first_reply: ReplyAPI
+    last_replies: ReplyAPI[]
 }
 
 // threads/id
