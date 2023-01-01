@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { useContext } from "react"
-import { FiHeadphones, FiVideo } from "react-icons/fi"
+import { FiHeadphones, FiVideo, FiDownload } from "react-icons/fi"
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import styles from "./index.module.css"
 import MediaContext from "lib/media-context"
@@ -11,6 +11,15 @@ interface AttachmentProps {
 }
 
 export function Attachment({data, small}: AttachmentProps) {
+    return (
+        <div>
+            <AttachmentParser data={data} small={small} />
+            <Metadata data={data} small={small} />
+        </div>
+    )
+}
+
+function AttachmentParser({data, small}: AttachmentProps) {
     if (data.mimetype.startsWith("image")) return <ImageAttachment data={data} small={small} />
     if (data.mimetype.startsWith("audio") || data.mimetype === "application/octet-stream")
         return <AudioAttachment data={data} small={small} />
@@ -51,6 +60,21 @@ function VideoAttachment({data, small}: AttachmentProps) {
             <div className={className} onClick={() => setAid(data.id)}>
                 <FiVideo />
             </div>
+        </div>
+    )
+}
+
+function Metadata({data, small}: AttachmentProps) {
+    if (small) return <></>
+
+    return (
+        <div className={styles.metadata}>
+            <a href={getIpfsUrl(data.cid)} target="_blank" rel="noreferrer">
+                <button>
+                    <FiDownload />
+                </button>
+            </a>
+            <div>{data.name}</div>
         </div>
     )
 }
