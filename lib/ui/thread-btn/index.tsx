@@ -11,12 +11,12 @@ export function ThreadBtn({data}: {data: ThreadAPI}) {
                         <div>#{data.id}</div>
                     </Link>
                     <div>
-                        {new Date(data.created_at).toLocaleString("en")}
+                        {new Date(data.first_reply.created_at).toLocaleString("en")}
                     </div>
                 </div>
-                <div>{data.body}</div>
+                <div>{data.first_reply.body}</div>
                 <div className={styles.attachments}>
-                    {data.attachments.map(attachment =>
+                    {data.first_reply.attachments.map(attachment =>
                         <Attachment key={attachment.id} data={attachment} />)}
                 </div>
             </div>

@@ -14,13 +14,12 @@ export interface DetailedBoardAPI extends BoardAPI {
 // boards/id
 export interface ThreadAPI {
     id: number
-    body: string
-    created_at: string
-    attachments: AttachmentAPI[]
+    first_reply: ReplyAPI
 }
 
 // threads/id
-export interface DetailedThreadAPI extends ThreadAPI {
+export interface DetailedThreadAPI {
+    id: number
     replies: ReplyAPI[]
 }
 

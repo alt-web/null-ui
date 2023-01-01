@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
 import { DetailedThreadAPI, getBackendUrl } from "lib/brain"
-import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
+import { ReplyCard, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
@@ -21,7 +21,7 @@ const ThreadView: NextPage = () => {
 
     useEffect(() => {
         if (data) {
-            const allAttachments = [...data.attachments]
+            const allAttachments = []
             for (const reply of data.replies) {
                 for (const attachment of reply.attachments) {
                     allAttachments.push(attachment)
@@ -38,8 +38,6 @@ const ThreadView: NextPage = () => {
     return (
         <Layout>
             <h2>Thread #{data.id}</h2>
-            <ThreadBtn data={data} />
-            <h4>Replies:</h4>
             <div className={styles.replies}>
                 {data.replies.map(reply =>
                     <ReplyCard key={reply.id} data={reply} />)}

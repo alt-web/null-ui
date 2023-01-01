@@ -33,7 +33,7 @@ const BoardView: NextPage<PageProps> = ({board}) => {
     useEffect(() => {
         const allAttachments: AttachmentAPI[] = []
         for (const thread of board.threads) {
-            for (const attachment of thread.attachments) {
+            for (const attachment of thread.first_reply.attachments) {
                 allAttachments.push(attachment)
             }
         }
