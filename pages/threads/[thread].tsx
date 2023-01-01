@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
 import { DetailedThreadAPI, getBackendUrl } from "lib/brain"
-import { ReplyCard, NewReplyForm } from "lib/ui"
+import { Message, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
@@ -40,7 +40,7 @@ const ThreadView: NextPage = () => {
             <h2>Thread #{data.id}</h2>
             <div className={styles.replies}>
                 {data.replies.map(reply =>
-                    <ReplyCard key={reply.id} data={reply} />)}
+                    <Message key={reply.id} data={reply} />)}
             </div>
             <NewReplyForm threadId={data.id} onSuccess={update} />
         </Layout>

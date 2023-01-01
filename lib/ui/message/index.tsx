@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react"
 import { FiHash, FiCalendar } from "react-icons/fi"
+import Link from "next/link"
 import { ReplyAPI, AttachmentAPI } from "lib/brain"
 import { Attachment } from "../attachment"
 import styles from "./index.module.css"
 
-export function ReplyCard({data}: {data: ReplyAPI}) {
+export function Message({data, href}: {data: ReplyAPI, href?: string}) {
     return (
-        <div className={styles.reply}>
+        <div className={styles.message}>
+            { href && <Link href={href}>
+                <div className={styles.link}></div>
+            </Link> }
             <div className={styles.heading}>
                 <div>
                     <FiHash />{data.id}

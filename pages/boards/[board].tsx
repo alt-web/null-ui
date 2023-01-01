@@ -2,7 +2,7 @@ import { NextPage, GetServerSideProps } from "next"
 import { ReactNode, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { DetailedBoardAPI, AttachmentAPI, getBackendUrl } from "lib/brain"
-import { ThreadBtn, NewThreadForm } from "lib/ui"
+import { Message, NewThreadForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/board.module.css"
 
@@ -47,7 +47,8 @@ const BoardView: NextPage<PageProps> = ({board}) => {
             <div>Threads:</div>
             <div className={styles.threads}>
                 {board.threads.map(thread =>
-                    <ThreadBtn key={thread.id} data={thread} />) }
+                    <Message key={thread.id} data={thread.first_reply} href={`/threads/${thread.id}`}/>
+                ) }
             </div>
             <NewThreadForm boardId={board.id} />
         </Layout>
