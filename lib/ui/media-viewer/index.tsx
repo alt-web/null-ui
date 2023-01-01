@@ -1,6 +1,6 @@
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import MediaContext from "lib/media-context"
-import { useContext, useState, useEffect, MouseEvent } from "react"
+import { useContext, useState, useEffect, MouseEvent, ReactNode } from "react"
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
 import styles from "./index.module.css"
 import Image from "next/image"
@@ -42,18 +42,30 @@ export function MediaViewer() {
 
     if (attachment !== null) return (
         <div className={styles.background} onClick={close}>
-            <button className={styles.btn} onClick={prev}>
-                <FiChevronLeft />
-            </button>
-                <div className={styles.container}>
-                    <ContentParser attachment={attachment} />
-                </div>
-            <button className={styles.btn} onClick={next}>
-                <FiChevronRight />
-            </button>
+            <Button isVisible={attachments.length > 1} onClick={prev} icon={<FiChevronLeft />} />
+            <div className={styles.container}>
+                <ContentParser attachment={attachment} />
+            </div>
+            <Button isVisible={attachments.length > 1} onClick={next} icon={<FiChevronRight />} />
         </div>
     )
     return <></>
+}
+
+interface ButtonProps {
+    icon: ReactNode,
+    onClick: (e: MouseEvent<HTMLButtonElement>) => void
+    isVisible: boolean
+}
+
+function Button({icon, onClick, isVisible}: ButtonProps) {
+    if (!isVisible) return <></>
+    
+    return (
+        <button className={styles.btn} onClick={onClick}>
+            {icon}
+        </button>
+    )
 }
 
 function ContentParser({attachment}: {attachment: AttachmentAPI}) {
