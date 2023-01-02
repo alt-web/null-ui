@@ -43,4 +43,11 @@ export interface AttachmentAPI {
     width: number | null
     height: number | null
     length: number | null
+    preview: PreviewAPI | null
+}
+
+// Mini-attachment for audio and video files
+export interface PreviewAPI {
+    id: number
+    cid: string
 }

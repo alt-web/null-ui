@@ -42,10 +42,24 @@ function AudioAttachment({data, small}: AttachmentProps) {
     const { setAid } = useContext(MediaContext)
     const className = small ? styles.smallPlaceholder : styles.placeholder
 
+    // Returns the cover if it exists,
+    // otherwise the headphones icon.
+    const getContent = () => {
+        if (data.preview) return (
+            <Image
+                src={getIpfsUrl(data.preview.cid)}
+                sizes="100px"
+                alt={`${data.name} - Cover`}
+                fill
+            />
+        )
+        return <FiHeadphones />
+    }
+
     return (
         <div>
             <div className={className} onClick={() => setAid(data.id)}>
-                <FiHeadphones />
+                {getContent()}
             </div>
         </div>
     )
