@@ -1,4 +1,5 @@
 import { FormEvent } from "react"
+import { FiMessageSquare, FiCornerDownRight } from "react-icons/fi"
 import Router from "next/router"
 import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
@@ -7,11 +8,13 @@ import styles from "./common.module.css"
 export function NewThreadForm({boardId}: {boardId: number}) {
     return (
         <form className={styles.form} onSubmit={(e) => sendThread(e)}>
-            <h4>New thread</h4>
+            <h4><FiMessageSquare /> New thread</h4>
             <input type="hidden" name="board" value={boardId} />
-            <textarea placeholder="Body" name="body" required />
+            <textarea placeholder="What's on your mind?" name="body" required />
             <FileUploader />
-            <button type="submit">Отправить</button>
+            <button type="submit">
+                <FiCornerDownRight /> Send
+            </button>
         </form>
     )
 }

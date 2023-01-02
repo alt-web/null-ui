@@ -1,28 +1,43 @@
 import { useState, ChangeEvent } from "react"
-import { getBackendUrl } from "lib/brain"
+import { getBackendUrl, AttachmentAPI } from "lib/brain"
+import styles from "./index.module.css"
 
 export function FileUploader() {
-    const [aids, setAids] = useState<number[]>([])
+    const [attachments, setAttachments] = useState<AttachmentAPI[]>([])
 
-    const appendAid = (aid: number) => {
-        if (aids.length < 4)
-            setAids([...aids, aid])
+    const appendAttachment = (newAttachment: AttachmentAPI) => {
+        if (attachments.length < 4)
+            setAttachments([...attachments, newAttachment])
+    }
+
+    const removeAttachment = (aId: number) => {
+        setAttachments(attachments.filter(a => a.id != aId))
     }
 
     return (
         <div>
-            <h4>Upload files</h4>
-            {aids.map((aid, index) =>
-                <div key={aid}>
-                    <input name={`aid${index+1}`} value={aid} readOnly />
+            <h4>Upload files ({attachments.length}/4)</h4>
+            
+            {attachments.map((attachment, index) =>
+                <div key={attachment.id} className={styles.attachment}>
+                    <input type="hidden" name={`aid${index+1}`} value={attachment.id} readOnly />
+                    <div>{attachment.name}</div>
+                    <button onClick={() => removeAttachment(attachment.id)}>x</button>
                 </div>
             )}
-            {aids.length < 4 && <input type="file" onChange={(e) => uploadFile(e, appendAid)} /> }
+            
+            {attachments.length < 4 &&
+                <input
+                    type="file"
+                    onChange={(e) => uploadFile(e, appendAttachment)}
+                    className={styles.uploader}
+                />
+            }
         </div>
     )
 }
 
-async function uploadFile(e: ChangeEvent<HTMLInputElement>, appendAid: (arg0: number) => void) {
+async function uploadFile(e: ChangeEvent<HTMLInputElement>, appendAid: (arg0: AttachmentAPI) => void) {
     e.preventDefault()
 
     const fd = new FormData()
@@ -41,6 +56,6 @@ async function uploadFile(e: ChangeEvent<HTMLInputElement>, appendAid: (arg0: nu
     const response = await fetch(url, options)
     const data = await response.json()
 
-    appendAid(data.id)
+    appendAid(data)
     e.target.value = ""
 }

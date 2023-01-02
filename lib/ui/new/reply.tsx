@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react"
+import { FiX, FiCornerDownRight, FiMessageSquare } from "react-icons/fi"
 import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
@@ -12,14 +13,17 @@ export function NewReplyForm({threadId, onSuccess, target, clearTarget}: {thread
         setFileUploaderKey(fk => fk + 1)
         onSuccess()
     }
+    
     return (
         <form className={styles.form} onSubmit={(e) => sendReply(e, afterSubmit)}>
-            <h4>New reply</h4>
+            <h4><FiMessageSquare /> New reply</h4>
             <TargetControls target={target} clearTarget={clearTarget} />
             <input type="hidden" name="origin" value={threadId} />
-            <textarea placeholder="Body" name="body" required />
+            <textarea placeholder="What's on your mind?" name="body" required />
             <FileUploader key={fileUploaderKey} />
-            <button type="submit">Отправить</button>
+            <button type="submit">
+                <FiCornerDownRight /> Send
+            </button>
         </form>
     )
 }
@@ -30,7 +34,9 @@ function TargetControls({target, clearTarget}: {target?: number, clearTarget: ()
     return (
         <div className={styles.target}>
             <div>Reply to #{target}</div>
-            <button onClick={clearTarget} type="button">x</button>
+            <button onClick={clearTarget} type="button">
+                <FiX />
+            </button>
             <input type="hidden" name="targetReply" value={target} readOnly />
         </div>
     )
