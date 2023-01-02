@@ -1,5 +1,5 @@
-import { NextPage } from 'next'
 import { ReactNode, useState, useEffect, useContext } from 'react'
+import { FiHome } from "react-icons/fi"
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
@@ -9,7 +9,7 @@ import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
 
-const ThreadView: NextPage = () => {
+const ThreadView = () => {
     const router = useRouter()
     const thread = router.query.thread ? router.query.thread.toString() : null
     const url = thread ? getBackendUrl(`threads/${thread}`) : null
@@ -40,15 +40,13 @@ const ThreadView: NextPage = () => {
     return (
         <Layout>
             <h2>Thread #{data.id}</h2>
-            <div className={styles.replies}>
-                {data.replies.map((reply, index) =>
-                    <Message
-                        key={reply.id}
-                        data={reply}
-                        onReply={index > 0 ? () => setTarget(reply.id) : undefined}
-                    />
-                )}
-            </div>
+            {data.replies.map((reply, index) =>
+                <Message
+                    key={reply.id}
+                    data={reply}
+                    onReply={index > 0 ? () => setTarget(reply.id) : undefined}
+                />
+            )}
             <NewReplyForm threadId={data.id} onSuccess={update} target={target} clearTarget={() => setTarget(undefined)} />
         </Layout>
     )
@@ -56,7 +54,9 @@ const ThreadView: NextPage = () => {
 
 const Layout = ({children}: {children: ReactNode}) => (
     <div className={styles.page}>
-        <Link href="/">Main page</Link>
+        <div className={styles.navigation}>
+            <Link href="/"><FiHome /></Link>
+        </div>
         {children}
     </div>
 )
