@@ -1,7 +1,7 @@
 import { NextPage } from "next"
 import { BoardAPI, getBackendUrl } from "lib/brain"
 import { BoardBtn } from "lib/ui"
-import styles from '../styles/Home.module.css'
+import styles from 'styles/index.module.css'
 
 interface PageProps {
     boards: BoardAPI[]
@@ -21,7 +21,8 @@ export const getServerSideProps = async() => {
 const Home: NextPage<PageProps> = (props) => {
     return (
         <div className={styles.container}>
-            <h2>Доски</h2>
+            <h1>0</h1>
+            <h2>Boards</h2>
             <div className={styles.boards}>
                 {props.boards.map(boardObj =>
                     <BoardBtn key={boardObj.id} data={boardObj} /> )}

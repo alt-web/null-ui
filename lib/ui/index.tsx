@@ -1,6 +1,5 @@
 export * from "./board-btn"
-export * from "./thread-btn"
-export * from "./reply-card"
+export * from "./message"
 export * from "./attachment"
 export * from "./new"
 export * from "./file-uploader"

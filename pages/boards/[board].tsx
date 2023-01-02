@@ -1,8 +1,9 @@
 import { NextPage, GetServerSideProps } from "next"
-import { ReactNode, useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
+import { FiHome, FiChevronRight } from "react-icons/fi"
 import Link from 'next/link'
 import { DetailedBoardAPI, AttachmentAPI, getBackendUrl } from "lib/brain"
-import { ThreadBtn, NewThreadForm } from "lib/ui"
+import { Message, NewThreadForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/board.module.css"
 
@@ -33,8 +34,13 @@ const BoardView: NextPage<PageProps> = ({board}) => {
     useEffect(() => {
         const allAttachments: AttachmentAPI[] = []
         for (const thread of board.threads) {
-            for (const attachment of thread.attachments) {
+            for (const attachment of thread.first_reply.attachments) {
                 allAttachments.push(attachment)
+            }
+            for (const reply of thread.last_replies) {
+                for (const attachment of reply.attachments) {
+                    allAttachments.push(attachment)
+                }
             }
         }
         
@@ -42,23 +48,28 @@ const BoardView: NextPage<PageProps> = ({board}) => {
     }, [board.threads])
 
     return (
-        <Layout>
-            <h2>/{board.code}/ - {board.name}</h2>
-            <div>Threads:</div>
-            <div className={styles.threads}>
-                {board.threads.map(thread =>
-                    <ThreadBtn key={thread.id} data={thread} />) }
-            </div>
+        <div className={styles.page}>
+            <Navigation boardCode={board.code} boardName={board.name} />
+            {board.threads.map(thread =>
+                <Message
+                    key={thread.id}
+                    data={thread.first_reply}
+                    href={`/threads/${thread.id}`}
+                    replies={thread.last_replies} />
+            )}
             <NewThreadForm boardId={board.id} />
-        </Layout>
+        </div>
     )
 }
 
-const Layout = ({children}: {children: ReactNode}) => (
-    <div className={styles.page}>
-        <Link href="/">Main page</Link>
-        {children}
-    </div>
-)
+function Navigation({boardCode, boardName}: {boardCode: string, boardName: string}) {
+    return (
+        <div className={styles.navigation}>
+            <Link href="/"><FiHome /></Link>
+            <FiChevronRight />
+            <div>{boardCode} - {boardName}</div>
+        </div>
+    )
+}
 
 export default BoardView

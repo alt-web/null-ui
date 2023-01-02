@@ -1,15 +1,15 @@
-import { NextPage } from 'next'
-import { ReactNode, useEffect, useContext } from 'react'
+import { ReactNode, useState, useEffect, useContext } from 'react'
+import { FiHome } from "react-icons/fi"
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import useSWR, { useSWRConfig } from "swr"
 import { DetailedThreadAPI, getBackendUrl } from "lib/brain"
-import { ThreadBtn, ReplyCard, NewReplyForm } from "lib/ui"
+import { Message, NewReplyForm } from "lib/ui"
 import MediaContext from "lib/media-context"
 import styles from "styles/thread.module.css"
 
 
-const ThreadView: NextPage = () => {
+const ThreadView = () => {
     const router = useRouter()
     const thread = router.query.thread ? router.query.thread.toString() : null
     const url = thread ? getBackendUrl(`threads/${thread}`) : null
@@ -17,11 +17,13 @@ const ThreadView: NextPage = () => {
     const { mutate } = useSWRConfig()
     const update = () => mutate(url)
 
+    const [target, setTarget] = useState<number|undefined>(undefined)
+
     const { setAttachments } = useContext(MediaContext)
 
     useEffect(() => {
         if (data) {
-            const allAttachments = [...data.attachments]
+            const allAttachments = []
             for (const reply of data.replies) {
                 for (const attachment of reply.attachments) {
                     allAttachments.push(attachment)
@@ -38,20 +40,23 @@ const ThreadView: NextPage = () => {
     return (
         <Layout>
             <h2>Thread #{data.id}</h2>
-            <ThreadBtn data={data} />
-            <h4>Replies:</h4>
-            <div className={styles.replies}>
-                {data.replies.map(reply =>
-                    <ReplyCard key={reply.id} data={reply} />)}
-            </div>
-            <NewReplyForm threadId={data.id} onSuccess={update} />
+            {data.replies.map((reply, index) =>
+                <Message
+                    key={reply.id}
+                    data={reply}
+                    onReply={index > 0 ? () => setTarget(reply.id) : undefined}
+                />
+            )}
+            <NewReplyForm threadId={data.id} onSuccess={update} target={target} clearTarget={() => setTarget(undefined)} />
         </Layout>
     )
 }
 
 const Layout = ({children}: {children: ReactNode}) => (
     <div className={styles.page}>
-        <Link href="/">Main page</Link>
+        <div className={styles.navigation}>
+            <Link href="/"><FiHome /></Link>
+        </div>
         {children}
     </div>
 )

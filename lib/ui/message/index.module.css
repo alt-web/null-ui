@@ -1,0 +1,101 @@
+.container {
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+.message {
+    background-color: #333;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 15px #0008;
+}
+
+.link {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.heading {
+    display: flex;
+    gap: 1em;
+    font-size: 10px;
+}
+
+.message svg {
+    margin-right: 6px;
+    line-height: 16px;
+    color: #aaa;
+}
+
+.message p {
+    margin-bottom: 0;
+}
+
+.attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1em;
+}
+
+.replies > div {
+    background-color: #222;
+    width: 100%;
+    z-index: -1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.replies > div:first-of-type {
+    padding-top: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.replies > div:not(:first-of-type) {
+    border-top: 1px solid #444;
+    padding: 10px;
+}
+
+.replyBtn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.replyBtn:hover {
+    background-color: rgb(64 64 64);
+}
+
+.replyBtn svg {
+    color: inherit;
+}
+
+.space {
+    flex-grow: 1;
+}
+
+.target {
+    background-color: rgb(64 64 64);
+    width: fit-content;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+}

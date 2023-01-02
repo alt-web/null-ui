@@ -1,24 +1,66 @@
-.background {
-    width: 100vw;
-    height: 100vh;
-    background-color: #000c;
+.viewer {
+    width: 100%;
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 200;
+}
+
+.background {
+    width: 100%;
+    height: 100%;
+    background-color: #000d;
+    backdrop-filter: blur(6px);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.mainRow {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 1em;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 70px);
+    margin-top: 20px;
+}
+
+.secondaryRow {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    font-size: 10px;
+    gap: 2em;
+}
+
+.secondaryRow > * {
+    z-index: 10;
 }
 
 .btn {
     width: 32px;
     height: 32px;
+    margin: 1em;
+    background-color: rgb(32 32 32);
+    color: #999;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 16px;
+    z-index: 10;
+}
+
+.btn:hover {
+    background-color: rgb(64 64 64);
 }
 
 .container {
-    max-width: 600px;
+    max-width: 800px;
     max-height: 600px;
     height: 100%;
     width: 100%;
@@ -28,10 +70,16 @@
     align-items: center;
 }
 
+
 .container img {
     object-fit: contain;
 }
 
 .video {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.audio {
     width: 100%;
 }

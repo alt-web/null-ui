@@ -1,0 +1,21 @@
+.attachment {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.attachment div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attachment button {
+    width: 32px;
+    margin-top: 0;
+}
+
+.uploader {
+    margin-top: 10px;
+}
