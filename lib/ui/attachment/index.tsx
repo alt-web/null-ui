@@ -68,11 +68,25 @@ function AudioAttachment({data, small}: AttachmentProps) {
 function VideoAttachment({data, small}: AttachmentProps) {
     const { setAid } = useContext(MediaContext)
     const className = small ? styles.smallPlaceholder : styles.placeholder
+    
+    // Returns video preview if it exists,
+    // otherwise the video icon.
+    const getContent = () => {
+        if (data.preview) return (
+            <Image
+                src={getIpfsUrl(data.preview.cid)}
+                sizes="100px"
+                alt={`${data.name} - Preview`}
+                fill
+            />
+        )
+        return <FiVideo />
+    }
 
     return (
         <div>
             <div className={className} onClick={() => setAid(data.id)}>
-                <FiVideo />
+                {getContent()}
             </div>
         </div>
     )
