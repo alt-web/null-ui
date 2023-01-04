@@ -42,7 +42,7 @@ export interface AttachmentAPI {
     size: number
     width: number | null
     height: number | null
-    length: number | null
+    duration: number | null
     preview: PreviewAPI | null
 }
 
