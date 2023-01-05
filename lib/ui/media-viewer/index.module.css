@@ -15,6 +15,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .mainRow {
@@ -70,16 +71,18 @@
     align-items: center;
 }
 
-
 .container img {
     object-fit: contain;
+    z-index: 2;
 }
 
 .video {
     max-width: 100%;
     max-height: 100%;
+    z-index: 2;
 }
 
 .audio {
     width: 100%;
+    z-index: 2;
 }
