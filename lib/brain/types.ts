@@ -28,8 +28,8 @@ export interface DetailedThreadAPI {
 export interface ReplyAPI {
     id: number
     body: string
-    target: number | null
     created_at: string
+    targets: number[]
     attachments: AttachmentAPI[]
 }
 

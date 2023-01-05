@@ -18,7 +18,7 @@ export function Message({data, href, replies, onReply}: {data: ReplyAPI, href?: 
                     <div className={styles.space}></div>
                     <ReplyButton onReply={onReply} />
                 </div>
-                <TargetReply target={data.target} />
+                <Targets replyId={data.id} data={data.targets} />
                 <p>{data.body}</p>
                 <Attachments data={data.attachments} />
             </div>
@@ -78,11 +78,18 @@ function ReplyButton({onReply}: {onReply?: () => void}) {
     )
 }
 
-function TargetReply({target}: {target: number|null}) {
-    if (!target) return <></>
+function Targets({replyId, data}: {replyId: number, data: number[]}) {
+    const filteredData = data.filter(t => t < replyId)
+
+    if (filteredData.length === 0) return <></>
+
     return (
-        <p className={styles.target}>
-            <FiChevronsRight /> In response to #{target}
-        </p>
+        <div className={styles.targets}>
+            {filteredData.map(target => (
+                <div key={target}>
+                    <FiChevronsRight /> #{target}
+                </div>
+            ))}
+        </div>
     )
 }
