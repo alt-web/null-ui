@@ -1,7 +1,15 @@
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import MediaContext from "lib/media-context"
 import { useContext, useState, useEffect, MouseEvent, ReactNode } from "react"
-import { FiChevronLeft, FiChevronRight, FiFile, FiHardDrive, FiDownload } from "react-icons/fi"
+import {
+    FiChevronLeft,
+    FiChevronRight,
+    FiFile,
+    FiHardDrive,
+    FiDownload,
+    FiClock,
+    FiMaximize2
+} from "react-icons/fi"
 import styles from "./index.module.css"
 import Image from "next/image"
 
@@ -53,6 +61,12 @@ export function MediaViewer() {
             <div className={styles.secondaryRow}>
                 <div><FiFile /> {attachment.name}</div>
                 <div><FiHardDrive /> {formatBytes(attachment.size)}</div>
+                {attachment.width && attachment.height && <div>
+                    <FiMaximize2 /> {attachment.width}x{attachment.height}
+                </div>}
+                {attachment.duration && <div>
+                    <FiClock /> {formatTime(attachment.duration)}
+                </div> }
                 <div>
                     <a href={getIpfsUrl(attachment.cid)} target="_blank" rel="noreferrer">
                         <FiDownload /> Download
@@ -101,4 +115,28 @@ function formatBytes(bytes: number) {
 
     const mbytes = kbytes / 1024
     return `${mbytes.toFixed(2)} mb`
+}
+
+// Returns string in format "00h 00m 00s".
+// Minutes and hours may be skipped.
+function formatTime(seconds: number) {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds - (hours * 3600)) / 60)
+    const secondsLeft = Math.round(seconds - (hours * 3600) - (minutes * 60))
+
+    // Show hours, minutes and seconds
+    if (hours) {
+        const minutesStr = minutes.toString().padStart(2, '0')
+        const secondsStr = secondsLeft.toString().padStart(2, '0')
+        return `${hours}h ${minutesStr}m ${secondsStr}s`
+    }
+
+    // Show minutes and seconds
+    if (minutes) {
+        const secondsStr = secondsLeft.toString().padStart(2, '0')
+        return `${minutes}m ${secondsStr}s`
+    }
+
+    // Show seconds
+    return `${secondsLeft}s`
 }
