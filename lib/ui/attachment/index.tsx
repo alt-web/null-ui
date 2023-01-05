@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { useContext } from "react"
-import { FiHeadphones, FiVideo, FiDownload } from "react-icons/fi"
+import { FiHeadphones, FiVideo, FiDownload, FiImage } from "react-icons/fi"
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import styles from "./index.module.css"
 import MediaContext from "lib/media-context"
@@ -29,11 +29,25 @@ function AttachmentParser({data, small}: AttachmentProps) {
 
 function ImageAttachment({data, small}: AttachmentProps) {
     const { setAid } = useContext(MediaContext)
-    const className = small ? styles.smallImage : styles.image
+    const className = small ? styles.smallPlaceholder : styles.placeholder
+    
+    // Returns the preview if it exists,
+    // otherwise the image icon.
+    const getContent = () => {
+        if (data.preview) return (
+            <Image
+                src={getIpfsUrl(data.preview.cid)}
+                sizes="100px"
+                alt={`${data.name} - Preview`}
+                fill
+            />
+        )
+        return <FiImage />
+    }
 
     return (
         <div className={className} onClick={() => setAid(data.id)}>
-            <Image src={getIpfsUrl(data.cid)} alt={data.name} fill />
+            {getContent()}
         </div>
     )
 }
