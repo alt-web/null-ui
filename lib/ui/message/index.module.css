@@ -2,7 +2,6 @@
     border-radius: 8px;
     width: 100%;
     max-width: 500px;
-    overflow: hidden;
 }
 
 .message {
@@ -106,4 +105,12 @@
     display: flex;
     align-items: center;
     font-size: 10px;
+    cursor: pointer;
+}
+
+.messagePopUp {
+    position: absolute;
+    background-color: #333;
+    z-index: 10;
+    min-width: 300px;
 }
