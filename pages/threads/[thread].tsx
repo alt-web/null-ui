@@ -17,7 +17,7 @@ const ThreadView = () => {
     const { mutate } = useSWRConfig()
     const update = () => mutate(url)
 
-    const [target, setTarget] = useState<number|undefined>(undefined)
+    const [targets, setTargets] = useState<number[]>([])
 
     const { setAttachments } = useContext(MediaContext)
 
@@ -44,10 +44,10 @@ const ThreadView = () => {
                 <Message
                     key={reply.id}
                     data={reply}
-                    onReply={index > 0 ? () => setTarget(reply.id) : undefined}
+                    onReply={index > 0 && !targets.includes(reply.id) ? () => setTargets([...targets, reply.id]) : undefined}
                 />
             )}
-            <NewReplyForm threadId={data.id} onSuccess={update} target={target} clearTarget={() => setTarget(undefined)} />
+            <NewReplyForm threadId={data.id} onSuccess={update} targets={targets} setTargets={(v) => setTargets(v)} />
         </Layout>
     )
 }

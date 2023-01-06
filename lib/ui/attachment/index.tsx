@@ -1,6 +1,6 @@
 import Image from "next/image"
-import { useContext } from "react"
-import { FiHeadphones, FiVideo, FiDownload } from "react-icons/fi"
+import { useContext, ReactNode } from "react"
+import { FiHeadphones, FiVideo, FiDownload, FiImage, FiFile } from "react-icons/fi"
 import { AttachmentAPI, getIpfsUrl } from "lib/brain"
 import styles from "./index.module.css"
 import MediaContext from "lib/media-context"
@@ -8,6 +8,10 @@ import MediaContext from "lib/media-context"
 interface AttachmentProps {
     data: AttachmentAPI
     small?: boolean
+}
+
+interface PreviewProps extends AttachmentProps {
+    icon: ReactNode
 }
 
 export function Attachment({data, small}: AttachmentProps) {
@@ -20,46 +24,43 @@ export function Attachment({data, small}: AttachmentProps) {
 }
 
 function AttachmentParser({data, small}: AttachmentProps) {
-    if (data.mimetype.startsWith("image")) return <ImageAttachment data={data} small={small} />
+    // Image
+    if (data.mimetype.startsWith("image"))
+        return <Preview data={data} small={small} icon={<FiImage />} />
+    
+    // Audio
     if (data.mimetype.startsWith("audio") || data.mimetype === "application/octet-stream")
-        return <AudioAttachment data={data} small={small} />
-    if (data.mimetype.startsWith("video")) return <VideoAttachment data={data} small={small} />
-    return <></>
+        return <Preview data={data} small={small} icon={<FiHeadphones />} />
+    
+    // Video
+    if (data.mimetype.startsWith("video"))
+        return <Preview data={data} small={small} icon={<FiVideo />} />
+    
+    // Anything else
+    return <Preview data={data} small={small} icon={<FiFile />} />
 }
 
-function ImageAttachment({data, small}: AttachmentProps) {
+function Preview({data, small, icon}: PreviewProps) {
     const { setAid } = useContext(MediaContext)
-    const className = small ? styles.smallImage : styles.image
+    const className = small ? styles.smallPlaceholder : styles.placeholder
+    
+    // Returns the preview if it exists,
+    // otherwise the fallback icon.
+    const getContent = () => {
+        if (data.preview) return (
+            <Image
+                src={getIpfsUrl(data.preview.cid)}
+                sizes="100px"
+                alt={`${data.name} - Preview`}
+                fill
+            />
+        )
+        return icon
+    }
 
     return (
         <div className={className} onClick={() => setAid(data.id)}>
-            <Image src={getIpfsUrl(data.cid)} alt={data.name} fill />
-        </div>
-    )
-}
-
-function AudioAttachment({data, small}: AttachmentProps) {
-    const { setAid } = useContext(MediaContext)
-    const className = small ? styles.smallPlaceholder : styles.placeholder
-
-    return (
-        <div>
-            <div className={className} onClick={() => setAid(data.id)}>
-                <FiHeadphones />
-            </div>
-        </div>
-    )
-}
-
-function VideoAttachment({data, small}: AttachmentProps) {
-    const { setAid } = useContext(MediaContext)
-    const className = small ? styles.smallPlaceholder : styles.placeholder
-
-    return (
-        <div>
-            <div className={className} onClick={() => setAid(data.id)}>
-                <FiVideo />
-            </div>
+            {getContent()}
         </div>
     )
 }

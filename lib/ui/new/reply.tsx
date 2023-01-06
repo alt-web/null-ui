@@ -4,20 +4,20 @@ import { getBackendUrl } from "lib/brain"
 import { FileUploader } from "lib/ui"
 import styles from "./common.module.css"
 
-export function NewReplyForm({threadId, onSuccess, target, clearTarget}: {threadId: number, onSuccess: () => void, target?: number, clearTarget: () => void}) {
+export function NewReplyForm({threadId, onSuccess, targets, setTargets}: {threadId: number, onSuccess: () => void, targets: number[], setTargets: (arg0: number[]) => void}) {
     // Used to reset the list of files after submit
     const [fileUploaderKey, setFileUploaderKey] = useState(1)
     
     const afterSubmit = () => {
-        clearTarget()
+        setTargets([])
         setFileUploaderKey(fk => fk + 1)
         onSuccess()
     }
     
     return (
-        <form className={styles.form} onSubmit={(e) => sendReply(e, afterSubmit)}>
+        <form className={styles.form} onSubmit={(e) => sendReply(e, targets, afterSubmit)}>
             <h4><FiMessageSquare /> New reply</h4>
-            <TargetControls target={target} clearTarget={clearTarget} />
+            <TargetControls targets={targets} setTargets={setTargets} />
             <input type="hidden" name="origin" value={threadId} />
             <textarea placeholder="What's on your mind?" name="body" required />
             <FileUploader key={fileUploaderKey} />
@@ -28,16 +28,19 @@ export function NewReplyForm({threadId, onSuccess, target, clearTarget}: {thread
     )
 }
 
-function TargetControls({target, clearTarget}: {target?: number, clearTarget: () => void}) {
-    if (target === undefined) return <></>
+function TargetControls({targets, setTargets}: {targets: number[], setTargets: (arg0: number[]) => void}) {
+    if (targets.length === 0) return <></>
 
     return (
-        <div className={styles.target}>
-            <div>Reply to #{target}</div>
-            <button onClick={clearTarget} type="button">
-                <FiX />
-            </button>
-            <input type="hidden" name="targetReply" value={target} readOnly />
+        <div className={styles.targets}>
+            {targets.map(target => (
+                <div key={target}>
+                    <div>Reply to #{target}</div>
+                    <button onClick={() => setTargets(targets.filter(t => t != target))} type="button">
+                        <FiX />
+                    </button>
+                </div>
+            ))}
         </div>
     )
 }
@@ -45,14 +48,13 @@ function TargetControls({target, clearTarget}: {target?: number, clearTarget: ()
 interface ReplyForm extends HTMLFormElement {
     origin: HTMLInputElement
     body: HTMLInputElement
-    targetReply?: HTMLInputElement
     aid1?: HTMLInputElement
     aid2?: HTMLInputElement
     aid3?: HTMLInputElement
     aid4?: HTMLInputElement
 }
 
-async function sendReply(e: FormEvent, onSuccess: () => void) {
+async function sendReply(e: FormEvent, targets: number[], onSuccess: () => void) {
     e.preventDefault()
     const target = e.target as ReplyForm
 
@@ -60,8 +62,8 @@ async function sendReply(e: FormEvent, onSuccess: () => void) {
     fd.append("origin", target.origin.value)
     fd.append("body", target.body.value)
 
-    if (target.targetReply)
-        fd.append("target", target.targetReply.value)
+    for (const target of targets)
+        fd.append("connections", target.toString())
 
     const appendAttachment = (name: string) => {
         if (target[name])

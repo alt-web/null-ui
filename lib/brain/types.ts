@@ -28,8 +28,8 @@ export interface DetailedThreadAPI {
 export interface ReplyAPI {
     id: number
     body: string
-    target: number | null
     created_at: string
+    connections: number[]
     attachments: AttachmentAPI[]
 }
 
@@ -42,5 +42,12 @@ export interface AttachmentAPI {
     size: number
     width: number | null
     height: number | null
-    length: number | null
+    duration: number | null
+    preview: PreviewAPI | null
+}
+
+// Mini-attachment for audio and video files
+export interface PreviewAPI {
+    id: number
+    cid: string
 }

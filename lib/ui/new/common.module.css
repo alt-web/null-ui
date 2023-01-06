@@ -42,25 +42,31 @@
     font-family: inherit;
 }
 
-.target {
+.targets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.targets > div {
     display: flex;
     gap: 10px;
     background-color: rgb(38 38 38);
     width: fit-content;
-    margin-bottom: 10px;
     border-radius: 4px;
     overflow: hidden;
     font-size: 10px;
 }
 
-.target div {
+.targets > div > div {
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 8px;
     padding-right: 8px;
 }
 
-.target button {
+.targets > div > button {
     padding: 4px;
     width: 20px;
     margin-top: 0;

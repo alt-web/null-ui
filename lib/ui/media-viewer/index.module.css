@@ -15,6 +15,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .mainRow {
@@ -70,6 +71,9 @@
     align-items: center;
 }
 
+.container > * {
+    z-index: 2;
+}
 
 .container img {
     object-fit: contain;
