@@ -63,7 +63,7 @@ async function sendReply(e: FormEvent, targets: number[], onSuccess: () => void)
     fd.append("body", target.body.value)
 
     for (const target of targets)
-        fd.append("targets", target.toString())
+        fd.append("connections", target.toString())
 
     const appendAttachment = (name: string) => {
         if (target[name])

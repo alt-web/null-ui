@@ -18,7 +18,7 @@ export function Message({data, href, replies, onReply}: {data: ReplyAPI, href?: 
                     <div className={styles.space}></div>
                     <ReplyButton onReply={onReply} />
                 </div>
-                <Targets replyId={data.id} data={data.targets} />
+                <Targets replyId={data.id} data={data.connections} />
                 <p>{data.body}</p>
                 <Attachments data={data.attachments} />
             </div>

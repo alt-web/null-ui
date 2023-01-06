@@ -29,7 +29,7 @@ export interface ReplyAPI {
     id: number
     body: string
     created_at: string
-    targets: number[]
+    connections: number[]
     attachments: AttachmentAPI[]
 }
 
